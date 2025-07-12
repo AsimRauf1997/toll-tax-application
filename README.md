@@ -3,7 +3,6 @@
 This project is a Node.js/TypeScript backend for managing and calculating toll tax entries.
 
 ## Features
-- Add and manage toll entries
 - Calculate toll charges
 - RESTful API structure
 - Input validation
