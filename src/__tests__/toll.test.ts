@@ -1,4 +1,4 @@
-import { app } from './../index';
+import { app, server } from './../index';
 import request from 'supertest';
 import { TollCalculationService } from '../services/TollCalculationService';
 import { EntryPoint } from '../models/TollEntry';
@@ -88,6 +88,21 @@ describe('Toll API Tests', () => {
           .send({
             entryPoint: 'Zero Point',
             exitPoint: 'NS Interchange',
+            entryDateTime: '2025-07-11T08:00:00Z',
+            exitDateTime: '2025-07-11T09:00:00Z'
+          });
+
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('Missing required fields');
+        expect(response.body.required).toContain('numberPlate');
+      });
+
+      it('should return 400 for when entry and exit points are same', async () => {
+        const response = await request(app)
+          .post(`${API_PATH}/calculate`)
+          .send({
+            entryPoint: 'Zero Point',
+            exitPoint: 'Zero Point',
             entryDateTime: '2025-07-11T08:00:00Z',
             exitDateTime: '2025-07-11T09:00:00Z'
           });
@@ -751,3 +766,7 @@ describe('Toll API Tests', () => {
   });
 });
 
+
+afterAll((done) => {
+  server.close(done);
+});

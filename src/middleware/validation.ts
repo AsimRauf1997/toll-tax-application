@@ -23,6 +23,13 @@ export const validateTollCalculationRequest = (
     });
     return;
   }
+  if(entryPoint.toLowerCase()=== exitPoint.toLowerCase()){
+      res.status(400).json({
+      error: 'Entry and exit points cannot be the same',
+      message: 'Please provide different entry and exit points'
+    });
+    return;
+  }
 
   const availableEntryPoints = TollCalculationService.getAvailableEntryPoints();
   
